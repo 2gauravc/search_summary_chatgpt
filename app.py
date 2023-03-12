@@ -2,6 +2,7 @@
 import config 
 import openai 
 import sys, getopt
+from datetime import datetime
 
 def get_chatgpt_resp(question): 
     openai.api_key = config.OPENAI_API_KEY
@@ -38,6 +39,25 @@ def chatgpt_prompt(pname, search_links):
            news (Yes or No)".format(pname, all_links)
     return(prompt_text)
 
+def generate_kyc_output(pname, search_links, chat_response):
+    rep_txt = ''
+
+    rep_txt += 'Summary of Google Search for {} \n'.format(pname)
+    rep_txt += "Report generated on {} \n".format(datetime.now())
+    rep_txt += "----------------------------------------------------- \n"
+
+    rep_txt += "Top ten Google Search Links \n"
+    rep_txt += '\n'.join(map(str,search_links))
+    rep_txt += "----------------------------------------------------- \n"
+
+    rep_txt+= "Summary of searches and adverse news findings \n"
+    rep_txt += chat_response 
+
+    return(rep_txt)
+
+
+
+
 def main(argv):
     try:
         opts, args = getopt.getopt(argv,"i:", ["person="])
@@ -57,7 +77,9 @@ def main(argv):
     resp = get_chatgpt_resp(prompt_text)
     
     # Create PDF with links and summary 
-    print (resp)
+    rep_txt= generate_kyc_output(pname, search_links, resp)
+
+    print(rep_txt)
 
 
 if __name__ == "__main__":
