@@ -48,9 +48,10 @@ def generate_kyc_output(pname, search_links, chat_response):
 
     rep_txt += "Top ten Google Search Links \n"
     rep_txt += '\n'.join(map(str,search_links))
-    rep_txt += "----------------------------------------------------- \n"
+    rep_txt += "\n----------------------------------------------------- \n"
 
     rep_txt+= "Summary of searches and adverse news findings \n"
+    rep_txt += "----------------------------------------------------- \n"
     rep_txt += chat_response 
 
     return(rep_txt)
